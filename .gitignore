@@ -1,0 +1,34 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Streamlit
+.streamlit/secrets.toml
+.streamlit/cache/
+
+# Data
+crop_data/
+new_models/
+syn_models/
+fao_models/
+pv_models/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+git rm --cached models/*.pkl
+git rm --cached models/*.pkl.joblib

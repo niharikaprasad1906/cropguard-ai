@@ -1,0 +1,16 @@
+
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+tensorflow
+xgboost
+lightgbm
+streamlit
+shap
+mlflow
+kaggle
+Pillow
+joblib
+plotly 

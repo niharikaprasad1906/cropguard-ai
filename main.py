@@ -1,0 +1,1 @@
+print('Use individual training scripts in src/training/')
