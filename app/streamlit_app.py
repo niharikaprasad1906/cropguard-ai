@@ -5,6 +5,8 @@ import pandas as pd
 import json
 import joblib
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 import plotly.graph_objects as go
 
 from PIL import Image
@@ -366,10 +368,18 @@ def fetch_weather(city: str, _cache_buster: int = 1):
     Step 1: geocode city → lat/lon via open-meteo geocoding API
     Step 2: fetch current weather from open-meteo
     """
+    session = requests.Session()
+    retry = Retry(connect=3, backoff_factor=0.5)
+    adapter = HTTPAdapter(max_retries=retry)
+    session.mount('http://', adapter)
+    session.mount('https://', adapter)
+    
     try:
         # Step 1 — Geocode
         geo_url = "https://geocoding-api.open-meteo.com/v1/search"
-        geo_r = requests.get(geo_url, params={"name": city, "count": 1, "language": "en", "format": "json"}, timeout=15)
+        geo_r = session.get(geo_url, params={"name": city, "count": 1, "language": "en", "format": "json"}, timeout=30)
+        if geo_r.status_code != 200:
+            return {"error": f"Weather API Error: Geocoding failed (Status {geo_r.status_code})."}
         geo_data = geo_r.json()
         if not geo_data.get("results"):
             return {"error": f"City '{city}' not found. Check spelling."}
@@ -385,7 +395,9 @@ def fetch_weather(city: str, _cache_buster: int = 1):
             "current": "temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,cloud_cover",
             "timezone": "auto",
         }
-        wx_r = requests.get(wx_url, params=wx_params, timeout=15)
+        wx_r = session.get(wx_url, params=wx_params, timeout=30)
+        if wx_r.status_code != 200:
+            return {"error": f"Weather API Error: Forecast failed (Status {wx_r.status_code})."}
         wx   = wx_r.json().get("current", {})
 
         # WMO weather code → description
