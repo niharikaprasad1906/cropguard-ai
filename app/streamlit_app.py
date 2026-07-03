@@ -353,16 +353,13 @@ DISEASE_YIELD_IMPACT = {
 
 def get_yield_impact(raw_name):
     """Extract crop from disease class name and return yield impact."""
-    # raw_name format: "Tomato__Tomato_mosaic_virus" or "Pepper__Bacterial_spot"
-    # Extract the actual crop name (first part before __)
-    parts = raw_name.split("__")
-    if len(parts) >= 2:
-        crop_detected = parts[0]  # e.g. "Tomato", "Pepper", "Apple"
-    else:
-        crop_detected = parts[0].split("_")[0]  # fallback
-    
-    # Match to yield model crop list (case-insensitive)
-    crop_match = next((c for c in crop_list if c.lower() == crop_detected.lower()), None)
+    # raw_name format: "Tomato__Tomato_mosaic_virus" or "Pepper__bell___Bacterial_spot" or "Potato___Early_blight"
+    # Extract the actual crop name by finding which crop appears at the start
+    crop_match = None
+    for crop in crop_list:
+        if raw_name.startswith(crop):
+            crop_match = crop
+            break
     
     if crop_match:
         # Disease loss estimates by crop type
