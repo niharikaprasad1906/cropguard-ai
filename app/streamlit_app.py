@@ -31,7 +31,7 @@ st.set_page_config(
 
 @st.cache_resource
 def load_models():
-    disease_model = load_model("models/disease_model.h5")
+    disease_model = load_model("models/disease_model.h5", compile=False)
     yield_model   = joblib.load("models/yield_model.pkl")
     yield_columns = joblib.load("models/yield_columns.pkl")
     le_crop       = joblib.load("models/yield_crop_encoder.pkl")
