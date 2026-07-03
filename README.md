@@ -17,7 +17,7 @@
 
 ---
 
-**[🚀 Live Demo]((https://cropguard-ai-ku3qgsutxpneehq7nwzfac.streamlit.app/)) · [📋 Report Bug](https://github.com/niharikaprasad1906/cropguard-ai/issues) · [✨ Request Feature](https://github.com/niharikaprasad1906/cropguard-ai/issues)**
+**[🚀 Live Demo](https://cropguard-ai-ku3qgsutxpneehq7nwzfac.streamlit.app/) · [📋 Report Bug](https://github.com/niharikaprasad1906/cropguard-ai/issues) · [✨ Request Feature](https://github.com/niharikaprasad1906/cropguard-ai/issues)**
 
 </div>
 
