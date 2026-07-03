@@ -861,7 +861,7 @@ with tab1:
             </html>
             """, height=850 if weather_html else 600, scrolling=False)
 
-            # ── Claude AI Diagnosis ──
+            # ── AI Diagnosis using Groq API ──
             if anthropic_key:
                 with st.spinner("🤖 Generating AI diagnosis..."):
                     diagnosis = get_llm_diagnosis(
@@ -899,18 +899,6 @@ with tab1:
                     </div>
                     </body></html>
                     """, height=estimated_height, scrolling=True)
-            else:
-                components.html("""
-                <!DOCTYPE html><html><head>
-                <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400&display=swap" rel="stylesheet">
-                </head><body style="margin:0;background:transparent;">
-                <div style="border:1px dashed #1e3a28;border-radius:12px;padding:1rem 1.4rem;margin-top:1rem;text-align:center;">
-                    <div style="font-size:0.8rem;color:#2a4a34;">
-                        🤖 Add your Groq API key in the sidebar to enable AI-powered diagnosis
-                    </div>
-                </div>
-                </body></html>
-                """, height=80)
 
             # ── Yield Impact Bridge ──
             impact = get_yield_impact(raw_name)
