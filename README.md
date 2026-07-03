@@ -388,31 +388,7 @@ sequenceDiagram
 
 ---
 
-## 🤝 Contributing
 
-Contributions are very welcome!
-
-```bash
-# 1. Fork the repo
-# 2. Create your feature branch
-git checkout -b feature/amazing-feature
-
-# 3. Commit your changes
-git commit -m "feat: add amazing feature"
-
-# 4. Push and open a PR
-git push origin feature/amazing-feature
-```
-
-Please follow [Conventional Commits](https://www.conventionalcommits.org/) for commit messages.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — see the [LICENSE](LICENSE) file for details.
-
----
 
 ## 🙏 Acknowledgements
 
