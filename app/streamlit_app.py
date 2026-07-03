@@ -355,8 +355,9 @@ def get_yield_impact(raw_name):
     """Extract crop from disease class name and return yield impact."""
     # raw_name format: "Tomato__Tomato_mosaic_virus" or "Pepper__bell___Bacterial_spot" or "Potato___Early_blight"
     # Extract the actual crop name by finding which crop appears at the start
+    # Sort by length (longest first) to avoid prefix matches (e.g., "Pepper" before "Peach")
     crop_match = None
-    for crop in crop_list:
+    for crop in sorted(crop_list, key=len, reverse=True):
         if raw_name.startswith(crop):
             crop_match = crop
             break
