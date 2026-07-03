@@ -11,10 +11,10 @@ import plotly.graph_objects as go
 
 from PIL import Image
 import tf_keras
-from tf_keras.models import load_model
-import tensorflow as tf
-# Patch tf.keras.utils to use tf_keras equivalents for GradCAM helpers
+from tf_keras.applications import MobileNetV2
+from tf_keras import layers as _kl, models as _km
 import tf_keras.utils as _tf_keras_utils
+import tensorflow as tf
 import matplotlib.cm as cm
 
 # ======================================
@@ -34,13 +34,28 @@ st.set_page_config(
 
 @st.cache_resource
 def load_models():
-    disease_model = load_model("models/disease_model.h5", compile=False)
+    # Load class labels first so we know num_classes for model rebuild
+    with open("models/disease_classes.json") as f:
+        class_indices = json.load(f)
+    num_classes = len(class_indices)
+
+    # ── Rebuild MobileNetV2 architecture then load weights ──────────────────
+    # We NEVER call load_model() / from_config because all Keras versions
+    # break on this saved .h5 config. load_weights(by_name=True) works on
+    # any Keras version since it matches weights purely by layer name.
+    base = MobileNetV2(weights=None, include_top=False, input_shape=(224, 224, 3))
+    x = _kl.GlobalAveragePooling2D()(base.output)
+    x = _kl.Dense(128, activation="relu")(x)
+    x = _kl.Dropout(0.3)(x)
+    output = _kl.Dense(num_classes, activation="softmax")(x)
+    disease_model = _km.Model(inputs=base.input, outputs=output)
+    disease_model.load_weights("models/disease_model.h5", by_name=True, skip_mismatch=True)
+    # ────────────────────────────────────────────────────────────────────────
+
     yield_model   = joblib.load("models/yield_model.pkl")
     yield_columns = joblib.load("models/yield_columns.pkl")
     le_crop       = joblib.load("models/yield_crop_encoder.pkl")
     le_country    = joblib.load("models/yield_country_encoder.pkl")
-    with open("models/disease_classes.json") as f:
-        class_indices = json.load(f)
     with open("models/crop_list.json") as f:
         crop_list = json.load(f)
     with open("models/country_list.json") as f:
