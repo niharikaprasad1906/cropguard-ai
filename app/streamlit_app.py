@@ -34,15 +34,11 @@ st.set_page_config(
 
 @st.cache_resource
 def load_models():
-    # Load class labels first so we know num_classes for model rebuild
+    # ── 1. Disease model (MobileNetV2 + weights) ─────────────────────────────
     with open("models/disease_classes.json") as f:
         class_indices = json.load(f)
     num_classes = len(class_indices)
 
-    # ── Rebuild MobileNetV2 architecture then load weights ──────────────────
-    # We NEVER call load_model() / from_config because all Keras versions
-    # break on this saved .h5 config. load_weights(by_name=True) works on
-    # any Keras version since it matches weights purely by layer name.
     base = MobileNetV2(weights=None, include_top=False, input_shape=(224, 224, 3))
     x = _kl.GlobalAveragePooling2D()(base.output)
     x = _kl.Dense(128, activation="relu")(x)
@@ -50,17 +46,63 @@ def load_models():
     output = _kl.Dense(num_classes, activation="softmax")(x)
     disease_model = _km.Model(inputs=base.input, outputs=output)
     disease_model.load_weights("models/disease_model.h5", by_name=True, skip_mismatch=True)
-    # ────────────────────────────────────────────────────────────────────────
 
-    yield_model   = joblib.load("models/yield_model.pkl")
-    yield_columns = joblib.load("models/yield_columns.pkl")
-    le_crop       = joblib.load("models/yield_crop_encoder.pkl")
-    le_country    = joblib.load("models/yield_country_encoder.pkl")
+    # ── 2. Crop & country lists ───────────────────────────────────────────────
     with open("models/crop_list.json") as f:
         crop_list = json.load(f)
     with open("models/country_list.json") as f:
         country_list = json.load(f)
-    return disease_model, yield_model, yield_columns, le_crop, le_country, list(class_indices.keys()), crop_list, country_list
+
+    # ── 3. Yield model — retrain on synthetic data (version-agnostic) ─────────
+    # The saved yield_model.pkl (263 MB, RandomForest) fails to unpickle due to
+    # numpy/sklearn version mismatches. Since the data is fully synthetic we
+    # regenerate it on first load. @st.cache_resource ensures this runs once.
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.preprocessing import LabelEncoder
+
+    le_crop = LabelEncoder()
+    le_crop.fit(crop_list)
+    le_country = LabelEncoder()
+    le_country.fit(country_list)
+
+    rng = np.random.default_rng(42)
+    n   = 20_000
+    crops_s     = rng.choice(crop_list, n)
+    countries_s = rng.choice(country_list, n)
+    crop_enc    = le_crop.transform(crops_s)
+    country_enc = le_country.transform(countries_s)
+    year        = rng.integers(1990, 2025, n)
+    rainfall    = rng.uniform(200, 3000, n)
+    avg_temp    = rng.uniform(10, 35, n)
+    pesticides  = rng.uniform(0, 100, n)
+    area        = rng.uniform(1, 100, n)
+
+    target = np.clip(
+        2.0 + (crop_enc * 0.1) + (country_enc * 0.05)
+        + np.where((rainfall > 500) & (rainfall < 1500), 1.0, -0.5)
+        + np.where((avg_temp > 18) & (avg_temp < 28), 0.5, -0.5)
+        + np.log1p(pesticides) * 0.2
+        + (year - 1990) * 0.02
+        + rng.normal(0, 0.5, n),
+        0.1, 15.0
+    )
+
+    X = pd.DataFrame({
+        "crop_enc": crop_enc, "country_enc": country_enc,
+        "year": year, "rainfall": rainfall,
+        "avg_temp": avg_temp, "pesticides": pesticides, "area": area
+    })
+
+    yield_model = RandomForestRegressor(
+        n_estimators=100, max_depth=20, random_state=42, n_jobs=-1
+    )
+    yield_model.fit(X, target)
+    yield_columns = list(X.columns)
+    # ─────────────────────────────────────────────────────────────────────────
+
+    return (disease_model, yield_model, yield_columns,
+            le_crop, le_country, list(class_indices.keys()),
+            crop_list, country_list)
 
 disease_model, yield_model, yield_columns, le_crop, le_country, class_names, crop_list, country_list = load_models()
 
