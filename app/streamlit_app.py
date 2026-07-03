@@ -39,13 +39,17 @@ def load_models():
         class_indices = json.load(f)
     num_classes = len(class_indices)
 
-    base = MobileNetV2(weights=None, include_top=False, input_shape=(224, 224, 3))
+    base = MobileNetV2(weights="imagenet", include_top=False, input_shape=(224, 224, 3))
     x = _kl.GlobalAveragePooling2D()(base.output)
     x = _kl.Dense(128, activation="relu")(x)
     x = _kl.Dropout(0.3)(x)
     output = _kl.Dense(num_classes, activation="softmax")(x)
     disease_model = _km.Model(inputs=base.input, outputs=output)
-    disease_model.load_weights("models/disease_model.h5", by_name=True, skip_mismatch=True)
+    try:
+        disease_model.load_weights("models/disease_model.h5")
+    except Exception as e:
+        st.warning(f"Could not load disease model weights: {e}")
+        # Continue with random initialization if weights fail to load
 
     # ── 2. Crop & country lists ───────────────────────────────────────────────
     with open("models/crop_list.json") as f:
