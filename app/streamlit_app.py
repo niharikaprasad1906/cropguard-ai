@@ -10,8 +10,11 @@ from urllib3.util.retry import Retry
 import plotly.graph_objects as go
 
 from PIL import Image
-from tensorflow.keras.models import load_model
+import tf_keras
+from tf_keras.models import load_model
 import tensorflow as tf
+# Patch tf.keras.utils to use tf_keras equivalents for GradCAM helpers
+import tf_keras.utils as _tf_keras_utils
 import matplotlib.cm as cm
 
 # ======================================
@@ -106,7 +109,7 @@ def overlay_gradcam(img_path_or_pil, heatmap, alpha=0.4):
         img = img_path_or_pil.copy()
     else:
         img = Image.open(img_path_or_pil)
-    img_array = tf.keras.utils.img_to_array(img)
+    img_array = _tf_keras_utils.img_to_array(img)
     heatmap = np.uint8(255 * heatmap)
     try:
         jet = cm.get_cmap("jet")
@@ -116,11 +119,11 @@ def overlay_gradcam(img_path_or_pil, heatmap, alpha=0.4):
         jet = matplotlib.colormaps["jet"]
     jet_colors = jet(np.arange(256))[:, :3]
     jet_heatmap = jet_colors[heatmap]
-    jet_heatmap = tf.keras.utils.array_to_img(jet_heatmap)
+    jet_heatmap = _tf_keras_utils.array_to_img(jet_heatmap)
     jet_heatmap = jet_heatmap.resize((img_array.shape[1], img_array.shape[0]))
-    jet_heatmap = tf.keras.utils.img_to_array(jet_heatmap)
+    jet_heatmap = _tf_keras_utils.img_to_array(jet_heatmap)
     superimposed_img = jet_heatmap * alpha + img_array * (1 - alpha)
-    superimposed_img = tf.keras.utils.array_to_img(superimposed_img)
+    superimposed_img = _tf_keras_utils.array_to_img(superimposed_img)
     return superimposed_img
 
 # ======================================
