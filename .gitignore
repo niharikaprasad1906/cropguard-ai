@@ -1,24 +1,59 @@
-# Byte-compiled / optimized / DLL files
+# =====================================================
+# CropGuard AI — .gitignore
+# =====================================================
+
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.pyc
+*.pyd
+*.pyo
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
 
 # Virtual environments
 venv/
 env/
 ENV/
+.venv/
 
 # IDE
 .vscode/
 .idea/
 *.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
 
-# Streamlit
+# Streamlit secrets (NEVER commit!)
 .streamlit/secrets.toml
 .streamlit/cache/
 
-# Data
+# =====================================================
+# LARGE MODEL FILES (use Git LFS or HuggingFace Hub)
+# =====================================================
+# yield_model.pkl is 263 MB — tracked via Git LFS
+# (see .gitattributes)
+
+# =====================================================
+# Large Datasets
+# =====================================================
+data/raw/
 crop_data/
+*.zip
+*.tar.gz
+*.tar.bz2
+
+# Output artifacts (not needed in repo)
+outputs/mlruns/
+outputs/*.png
+outputs/*.jpg
+
+# Old model directories
 new_models/
 syn_models/
 fao_models/
@@ -27,8 +62,17 @@ pv_models/
 # OS
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # Environment variables
 .env
-git rm --cached models/*.pkl
-git rm --cached models/*.pkl.joblib
+.env.local
+.env.production
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Logs
+*.log
+logs/

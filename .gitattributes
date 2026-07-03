@@ -1,0 +1,25 @@
+# =====================================================
+# Git LFS — Large File Storage
+# =====================================================
+# Track large model and binary files via Git LFS
+# Run: git lfs install  (one-time setup)
+# Trained ML models
+models/*.pkl    filter=lfs diff=lfs merge=lfs -text
+models/*.h5     filter=lfs diff=lfs merge=lfs -text
+models/*.joblib filter=lfs diff=lfs merge=lfs -text
+models/*.pt     filter=lfs diff=lfs merge=lfs -text
+models/*.pth    filter=lfs diff=lfs merge=lfs -text
+# Data files
+*.csv           filter=lfs diff=lfs merge=lfs -text
+*.parquet       filter=lfs diff=lfs merge=lfs -text
+# Ensure consistent line endings
+*.py   text eol=lf
+*.md   text eol=lf
+*.txt  text eol=lf
+*.toml text eol=lf
+*.json text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.pkl filter=lfs diff=lfs merge=lfs -text
+*.h5 filter=lfs diff=lfs merge=lfs -text
+*.joblib filter=lfs diff=lfs merge=lfs -text
