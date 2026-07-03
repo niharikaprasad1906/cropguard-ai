@@ -275,7 +275,6 @@ Open [http://localhost:8501](http://localhost:8501) 🎉
 
 ### Streamlit Community Cloud (Recommended — Free)
 
-[![Deploy to Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io)
 
 1. Push this repo to GitHub
 2. Go to [share.streamlit.io](https://share.streamlit.io)
