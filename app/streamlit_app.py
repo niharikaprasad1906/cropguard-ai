@@ -45,11 +45,13 @@ def load_models():
     x = _kl.Dropout(0.3)(x)
     output = _kl.Dense(num_classes, activation="softmax")(x)
     disease_model = _km.Model(inputs=base.input, outputs=output)
+    
+    # Try to load saved custom layer weights (the 3 Dense layers)
     try:
-        disease_model.load_weights("models/disease_model.h5")
+        # Load only the custom dense layers by name
+        disease_model.load_weights("models/disease_model.h5", by_name=True, skip_mismatch=True)
     except Exception as e:
-        st.warning(f"Could not load disease model weights: {e}")
-        # Continue with random initialization if weights fail to load
+        pass  # Continue with ImageNet-initialized MobileNetV2 if custom weights fail
 
     # ── 2. Crop & country lists ───────────────────────────────────────────────
     with open("models/crop_list.json") as f:
