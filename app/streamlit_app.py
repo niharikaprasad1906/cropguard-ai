@@ -127,38 +127,45 @@ def get_last_conv_layer_name(model):
     return None
 
 def make_gradcam_heatmap(img_array, model, last_conv_layer_name, pred_index=None):
-    layer_idx = None
-    for i, layer in enumerate(model.layers):
-        if layer.name == last_conv_layer_name:
-            layer_idx = i
-            break
-            
-    if layer_idx is None:
-        raise ValueError("Layer not found")
-        
-    x = img_array
-    for layer in model.layers[:layer_idx + 1]:
-        x = layer(x)
-        
-    conv_outputs = x
+    """Standard Grad-CAM via sub-model + GradientTape.
     
+    Works correctly with MobileNetV2's residual Add layers because the
+    sub-model handles all branching internally — no manual layer looping.
+    """
+    # Build a sub-model: input → (last_conv_output, final_predictions)
+    try:
+        conv_layer = model.get_layer(last_conv_layer_name)
+    except ValueError:
+        raise ValueError(f"Layer '{last_conv_layer_name}' not found in model.")
+
+    grad_model = _km.Model(
+        inputs=model.inputs,
+        outputs=[conv_layer.output, model.output]
+    )
+
     with tf.GradientTape() as tape:
+        inputs = tf.cast(img_array, tf.float32)
+        conv_outputs, preds = grad_model(inputs)
         tape.watch(conv_outputs)
-        x = conv_outputs
-        for layer in model.layers[layer_idx + 1:]:
-            x = layer(x)
-        preds = x
-        
         if pred_index is None:
             pred_index = tf.argmax(preds[0])
         class_channel = preds[:, pred_index]
 
+    # Gradient of the class score w.r.t. the conv feature maps
     grads = tape.gradient(class_channel, conv_outputs)
+    # Pool gradients over spatial dims → importance weights per channel
     pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
-    conv_outputs_val = conv_outputs[0]
-    heatmap = conv_outputs_val @ pooled_grads[..., tf.newaxis]
+
+    # Weighted combination of feature maps
+    conv_outputs_val = conv_outputs[0]                           # (H, W, C)
+    heatmap = conv_outputs_val @ pooled_grads[..., tf.newaxis]  # (H, W, 1)
     heatmap = tf.squeeze(heatmap)
-    heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
+    # ReLU + normalise to [0, 1]
+    heatmap = tf.maximum(heatmap, 0)
+    max_val = tf.math.reduce_max(heatmap)
+    if max_val == 0:
+        return heatmap.numpy()
+    heatmap = heatmap / max_val
     return heatmap.numpy()
 
 def overlay_gradcam(img_path_or_pil, heatmap, alpha=0.4):
