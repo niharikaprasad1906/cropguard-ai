@@ -1044,7 +1044,8 @@ with tab2:
             sample = sample[yield_columns]
             
             # Get prediction from all trees in the forest for uncertainty estimation
-            predictions = np.array([tree.predict(sample)[0] for tree in yield_model.estimators_])
+            # Need to reshape to (1, n_features) for sklearn compatibility
+            predictions = np.array([tree.predict(sample.values)[0] for tree in yield_model.estimators_])
             result_tha = np.mean(predictions)
             std_tha    = np.std(predictions)
             ci_lower   = result_tha - 1.96 * std_tha  # 95% confidence interval
