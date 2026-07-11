@@ -390,33 +390,29 @@ DISEASE_INFO = {
 }
 
 def get_disease_info(class_name):
-    clean = class_name.replace("__", "_").replace(" ", "_")
+    class_lower = class_name.lower()
     
-    # Exact match check first
-    if clean in DISEASE_INFO:
-        return DISEASE_INFO[clean]
-        
-    # Generalized fallback logic for healthy tags across different crops
-    if "healthy" in clean.lower():
-        # Match crop specific healthy profile if found, otherwise use Tomato_healthy as base template
+    if "healthy" in class_lower:
         for key in DISEASE_INFO:
-            if "healthy" in key.lower() and key.split('_')[0].lower() in clean.lower():
+            if "healthy" in key.lower() and key.split("_")[0].lower() in class_lower:
                 return DISEASE_INFO[key]
         return DISEASE_INFO["Tomato_healthy"]
         
-    # Substring lookup loop
     for key in DISEASE_INFO:
-        if key.lower() in clean.lower() or clean.lower() in key.lower():
+        if "healthy" in key.lower(): 
+            continue
+        
+        key_words = key.lower().split("_")
+        
+        if all(word in class_lower for word in key_words):
             return DISEASE_INFO[key]
             
-    # Absolute default if nothing matches
     return {
         "severity": "medium",
         "description": "Disease detected. Consult an agricultural expert for precise diagnosis.",
         "treatment": "Isolate affected plants and seek expert advice.",
         "prevention": "Monitor crops regularly and maintain field hygiene.",
     }
-
 def format_disease_name(raw_name):
     parts = raw_name.replace("__", "_").split("_")
     seen = []
