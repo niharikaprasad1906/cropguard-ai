@@ -225,19 +225,191 @@ DISEASE_INFO = {
         "treatment": "No treatment required.",
         "prevention": "Maintain regular monitoring and good agricultural practices.",
     },
+    "Potato_Early_blight": {
+        "severity": "medium",
+        "description": "Fungal pathogen producing target-like brown spots on older foliage.",
+        "treatment": "Apply protectant fungicides. Improve soil nitrogen levels.",
+        "prevention": "Plant certified seed tubers and practice a 3-year crop rotation.",
+    },
+    "Potato_Late_blight": {
+        "severity": "high",
+        "description": "Highly destructive oomycete causing rapid foliar necrosis and tuber rot.",
+        "treatment": "Apply systemic fungicides immediately. Kill infected vines before harvest.",
+        "prevention": "Eliminate cull piles and voluntary plants. Select resistant cultivars.",
+    },
+    "Potato_healthy": {
+        "severity": "low",
+        "description": "Potato foliage appears healthy with normal pigmentation and structure.",
+        "treatment": "No treatment required.",
+        "prevention": "Follow appropriate hilling, watering, and scouting routines.",
+    },
+    "Corn_Common_rust": {
+        "severity": "medium",
+        "description": "Fungal disease forming powdery, cinnamon-brown pustules on both leaf surfaces.",
+        "treatment": "Fungicides are rarely economical unless severe early infection occurs.",
+        "prevention": "Plant hybrid varieties engineered with specific rust resistance genes.",
+    },
+    "Corn_Northern_Leaf_Blight": {
+        "severity": "high",
+        "description": "Fungal infection creating long, cigar-shaped grayish-green lesions.",
+        "treatment": "Apply foliar fungicides at silking stage if thresholds are exceeded.",
+        "prevention": "Manage residue through tillage and rotate away from corn for one season.",
+    },
+    "Corn_healthy": {
+        "severity": "low",
+        "description": "Corn leaf exhibits solid green color without spotting or streaking.",
+        "treatment": "No treatment required.",
+        "prevention": "Ensure balanced nitrogen application and uniform plant spacing.",
+    },
+    "Apple_scab": {
+        "severity": "high",
+        "description": "Fungal disease leading to olive-green or brown velvety spots on leaves and fruit.",
+        "treatment": "Apply targeted protectant or curative fungicides during green tip to petal fall.",
+        "prevention": "Rake and destroy fallen leaves in autumn to disrupt overwintering spores.",
+    },
+    "Apple_Black_rot": {
+        "severity": "medium",
+        "description": "Fungal pathogen causing frogeye leaf spots, fruit rot, and twig cankers.",
+        "treatment": "Prune out dead wood, mummified fruit, and active cankers during dormancy.",
+        "prevention": "Maintain tree vigor and avoid mechanical bark injuries.",
+    },
+    "Apple_Cedar_rust": {
+        "severity": "medium",
+        "description": "Rust fungus producing striking bright orange spots on upper leaf surfaces.",
+        "treatment": "Apply preventative fungicides from bud break until early summer.",
+        "prevention": "Remove nearby eastern red cedar trees if practical within a 2-mile radius.",
+    },
+    "Apple_healthy": {
+        "severity": "low",
+        "description": "Apple foliage displays normal, healthy canopy uniformity.",
+        "treatment": "No treatment required.",
+        "prevention": "Prune annually to maximize sunlight penetration and airflow.",
+    },
+    "Grape_Black_rot": {
+        "severity": "high",
+        "description": "Fungal disease generating small brown circular lesions on leaves and shriveling fruit into black mummies.",
+        "treatment": "Apply early-season fungicides from bud break until fruit completion.",
+        "prevention": "Remove all mummified berries from vines and ground during winter pruning.",
+    },
+    "Grape_Esca": {
+        "severity": "high",
+        "description": "Complex wood disease causing 'tiger-stripe' leaf discoloration and vine decline.",
+        "treatment": "No cure exists; prune back infected wood to healthy tissue or replace vines.",
+        "prevention": "Protect winter pruning wounds with specialized paste or paint sealants.",
+    },
+    "Grape_Leaf_blight": {
+        "severity": "medium",
+        "description": "Fungal infection causing dark brown necrotic shapes on leaf edges.",
+        "treatment": "Apply copper sprays or standard broad-spectrum viticulture fungicides.",
+        "prevention": "Keep canopy lifted and clear weeds beneath vines to reduce ground humidity.",
+    },
+    "Grape_healthy": {
+        "severity": "low",
+        "description": "Vibrant grape leaf showing excellent vascular health and color.",
+        "treatment": "No treatment required.",
+        "prevention": "Stick to strict vine training and seasonal spray program baselines.",
+    },
+    "Pepper_Bacterial_spot": {
+        "severity": "high",
+        "description": "Bacterial pathogen causing small, water-soaked spots that turn dark brown and cause leaf drop.",
+        "treatment": "Apply copper-based bactericides mixed with mancozeb weekly.",
+        "prevention": "Avoid handling plants when wet; use certified pathogen-free seeds.",
+    },
+    "Pepper_healthy": {
+        "severity": "low",
+        "description": "Pepper leaf looks uniform, healthy, and glossy.",
+        "treatment": "No treatment required.",
+        "prevention": "Implement drip irrigation rather than overhead sprinklers.",
+    },
+    "Strawberry_Leaf_scorch": {
+        "severity": "medium",
+        "description": "Fungal infection resulting in purple blotches that expand, drying out the leaf tissue.",
+        "treatment": "Apply appropriate registered fungicides if noticed before fruit set.",
+        "prevention": "Plant in well-drained soil locations and thin plants out to avoid crowding.",
+    },
+    "Strawberry_healthy": {
+        "severity": "low",
+        "description": "Strawberry foliage looks clean, compact, and completely healthy.",
+        "treatment": "No treatment required.",
+        "prevention": "Mulch clean straw underneath runners to prevent soil splashing.",
+    },
+    "Soybean_healthy": {
+        "severity": "low",
+        "description": "Soybean leaf has clean edges, standard color, and normal development.",
+        "treatment": "No treatment required.",
+        "prevention": "Monitor fields for early signs of standard legume pathogens.",
+    },
+    "Cherry_Powdery_mildew": {
+        "severity": "medium",
+        "description": "Fungus producing a white, powdery coating on leaf surfaces and young shoots.",
+        "treatment": "Apply sulfur or commercial fungicides when initial signs appear.",
+        "prevention": "Prune internal dense branches to improve overall interior canopy ventilation.",
+    },
+    "Cherry_healthy": {
+        "severity": "low",
+        "description": "Cherry orchard sample shows complete leaf health.",
+        "treatment": "No treatment required.",
+        "prevention": "Maintain uniform watering cycles to discourage stress.",
+    },
+    "Peach_Bacterial_spot": {
+        "severity": "high",
+        "description": "Bacterial disease leading to 'shot-hole' leaf spots, defoliation, and fruit lesions.",
+        "treatment": "Utilize protective copper or oxytetracycline programs during the season.",
+        "prevention": "Avoid planting highly susceptible stone fruit cultivars in windy regions.",
+    },
+    "Peach_healthy": {
+        "severity": "low",
+        "description": "Peach tree leaf exhibits standard structure without abnormalities.",
+        "treatment": "No treatment required.",
+        "prevention": "Follow recommended post-harvest orchard hygiene cleanups.",
+    },
+    "Orange_Citrus_greening": {
+        "severity": "high",
+        "description": "Devastating bacterial disease spread by psyllids, causing yellow shoots and bitter, misshapen fruit.",
+        "treatment": "No cure; remove infected trees immediately to protect the remaining grove.",
+        "prevention": "Strictly control Asian citrus psyllid populations using insecticides or netting.",
+    },
+    "Squash_Powdery_mildew": {
+        "severity": "medium",
+        "description": "Fungal growth forming white talcum-like spots on leaves, accelerating senescence.",
+        "treatment": "Apply horticultural oils, potassium bicarbonate, or fungicides.",
+        "prevention": "Space cucurbits generously to reduce relative microclimate humidity.",
+    },
+    "Raspberry_healthy": {
+        "severity": "low",
+        "description": "Raspberry cane leaf looks entirely robust, vibrant, and clean.",
+        "treatment": "No treatment required.",
+        "prevention": "Remove spent floricanes immediately post-harvest.",
+    },
+    "Blueberry_healthy": {
+        "severity": "low",
+        "description": "Blueberry foliage shows solid nutrient balance and perfect health.",
+        "treatment": "No treatment required.",
+        "prevention": "Maintain low soil pH ranges to avoid stress-induced chlorosis.",
+    }
 }
 
 def get_disease_info(class_name):
     clean = class_name.replace("__", "_").replace(" ", "_")
-
-    # Check healthy FIRST before looping — catches Tomato_healthy, Pepper__healthy, Corn_healthy etc.
+    
+    # Exact match check first
+    if clean in DISEASE_INFO:
+        return DISEASE_INFO[clean]
+        
+    # Generalized fallback logic for healthy tags across different crops
     if "healthy" in clean.lower():
+        # Match crop specific healthy profile if found, otherwise use Tomato_healthy as base template
+        for key in DISEASE_INFO:
+            if "healthy" in key.lower() and key.split('_')[0].lower() in clean.lower():
+                return DISEASE_INFO[key]
         return DISEASE_INFO["Tomato_healthy"]
-
+        
+    # Substring lookup loop
     for key in DISEASE_INFO:
         if key.lower() in clean.lower() or clean.lower() in key.lower():
             return DISEASE_INFO[key]
-
+            
+    # Absolute default if nothing matches
     return {
         "severity": "medium",
         "description": "Disease detected. Consult an agricultural expert for precise diagnosis.",
