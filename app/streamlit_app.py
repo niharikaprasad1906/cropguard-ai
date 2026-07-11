@@ -1163,7 +1163,7 @@ with tab2:
     col_a, col_b = st.columns(2, gap="medium")
     with col_a:
         detected = st.session_state.get("detected_crop", None)
-        selected_crop = st.selectbox("Crop Type", crop_list, key="yield_crop_select")
+        selected_crop = st.selectbox("Crop Type", ["Pepper", "Potato", "Tomato"], key="yield_crop_select")
         if detected and detected in crop_list:
             st.markdown(f'<div style="font-size:0.7rem;color:#6edb8f;margin-top:-0.6rem;">✨ Auto-detected from Disease tab: <strong>{detected}</strong></div>', unsafe_allow_html=True)
     with col_b:
